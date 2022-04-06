@@ -41,3 +41,4 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
 )
+find_unused_parameters=True
