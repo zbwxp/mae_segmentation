@@ -9,10 +9,10 @@ from mmcv.runner import build_optimizer, build_runner
 from mmseg.core import DistEvalHook, EvalHook
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
-try:
-    import apex
-except:
-    print('apex is not installed')
+# try:
+#     import apex
+# except:
+#     print('apex is not installed')
 
 
 def set_random_seed(seed, deterministic=False):
