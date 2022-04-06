@@ -12,6 +12,7 @@ from mmseg.models.builder import HEADS
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from timm.models.layers import trunc_normal_
 import matplotlib.pyplot as plt
+from mmseg.models.losses import accuracy
 
 def trunc_normal_init(module: nn.Module,
                       mean: float = 0,
@@ -247,7 +248,7 @@ class ATMHead(BaseDecodeHead):
         else:
             return out["pred"]
 
-        return out["pred"]
+        return out
 
     @torch.jit.unused
     def _set_aux_loss(self, outputs_class, outputs_seg_masks):
@@ -275,8 +276,17 @@ class ATMHead(BaseDecodeHead):
     def d4_to_d3(self, t):
         return t.flatten(-2).transpose(-1, -2)
 
-    # @force_fp32(apply_to=('seg_logit',))
-    # def losses(self, seg_logit, seg_label):
-    #     """Compute segmentation loss."""
-    #     if isinstance(seg_logit, dict):
-    #         print()
+    @force_fp32(apply_to=('seg_logit',))
+    def losses(self, seg_logit, seg_label):
+        """Compute segmentation loss."""
+        if isinstance(seg_logit, dict):
+            # atm loss
+            seg_label = seg_label.squeeze(1)
+            loss = self.loss_decode(
+                seg_logit,
+                seg_label,
+                weight=None,
+                ignore_index=self.ignore_index)
+
+            loss['acc_seg'] = accuracy(seg_logit["pred"], seg_label)
+            return loss
