@@ -52,6 +52,8 @@ class LayerDecayOptimizerConstructor(DefaultOptimizerConstructor):
 
             if group_name not in parameter_groups:
                 scale = layer_decay_rate ** (num_layers - layer_id - 1)
+                if "decode_head." in name:
+                    scale = 10.0
 
                 parameter_groups[group_name] = {
                     "weight_decay": this_weight_decay,
