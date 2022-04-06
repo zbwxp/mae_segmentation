@@ -322,35 +322,35 @@ class MAE(nn.Module):
         # trunc_normal_(self.mask_token, std=.02)
         self.out_indices = out_indices
 
-        if patch_size == 16:
-            self.fpn1 = nn.Sequential(
-                nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
-                nn.SyncBatchNorm(embed_dim) if fpn1_norm=='SyncBN' else nn.BatchNorm2d(embed_dim),
-                nn.GELU(),
-                nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
-            )
-
-            self.fpn2 = nn.Sequential(
-                nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
-            )
-
-            self.fpn3 = nn.Identity()
-
-            self.fpn4 = nn.MaxPool2d(kernel_size=2, stride=2)
-        elif patch_size == 8:
-            self.fpn1 = nn.Sequential(
-                nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
-            )
-
-            self.fpn2 = nn.Identity()
-
-            self.fpn3 = nn.Sequential(
-                nn.MaxPool2d(kernel_size=2, stride=2),
-            )
-
-            self.fpn4 = nn.Sequential(
-                nn.MaxPool2d(kernel_size=4, stride=4),
-            )
+        # if patch_size == 16:
+        #     self.fpn1 = nn.Sequential(
+        #         nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
+        #         nn.SyncBatchNorm(embed_dim) if fpn1_norm=='SyncBN' else nn.BatchNorm2d(embed_dim),
+        #         nn.GELU(),
+        #         nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
+        #     )
+        #
+        #     self.fpn2 = nn.Sequential(
+        #         nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
+        #     )
+        #
+        #     self.fpn3 = nn.Identity()
+        #
+        #     self.fpn4 = nn.MaxPool2d(kernel_size=2, stride=2)
+        # elif patch_size == 8:
+        #     self.fpn1 = nn.Sequential(
+        #         nn.ConvTranspose2d(embed_dim, embed_dim, kernel_size=2, stride=2),
+        #     )
+        #
+        #     self.fpn2 = nn.Identity()
+        #
+        #     self.fpn3 = nn.Sequential(
+        #         nn.MaxPool2d(kernel_size=2, stride=2),
+        #     )
+        #
+        #     self.fpn4 = nn.Sequential(
+        #         nn.MaxPool2d(kernel_size=4, stride=4),
+        #     )
         self.apply(self._init_weights)
         self.fix_init_weight()
 
@@ -423,12 +423,13 @@ class MAE(nn.Module):
             else:
                 x = blk(x, rel_pos_bias)
             if i in self.out_indices:
-                xp = x[:, 1:, :].permute(0, 2, 1).reshape(B, -1, Hp, Wp)
-                features.append(xp.contiguous())
+                # xp = x[:, 1:, :].permute(0, 2, 1).reshape(B, -1, Hp, Wp)
+                # features.append(xp.contiguous())
+                features.append(x)
 
-        ops = [self.fpn1, self.fpn2, self.fpn3, self.fpn4]
-        for i in range(len(features)):
-            features[i] = ops[i](features[i])
+        # ops = [self.fpn1, self.fpn2, self.fpn3, self.fpn4]
+        # for i in range(len(features)):
+        #     features[i] = ops[i](features[i])
 
         return tuple(features)
 

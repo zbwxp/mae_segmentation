@@ -18,7 +18,7 @@ from mmseg.models import build_segmentor
 from mmseg.utils import collect_env, get_root_logger
 
 from backbone import mae
-
+from decode_heads import atm_head
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
