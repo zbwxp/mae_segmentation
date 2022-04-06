@@ -31,10 +31,10 @@ model = dict(
         num_layers=3,
         num_heads=12,
         use_stages=len(out_indices),
-        loss_decode=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
         # loss_decode=dict(
-        #     type='ATMLoss', num_classes=150, dec_layers=3, loss_weight=1.0),
+        #         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
+        loss_decode=dict(
+            type='ATMLoss', num_classes=150, dec_layers=3, loss_weight=1.0),
     ),
     auxiliary_head=None,
     # model training and testing settings

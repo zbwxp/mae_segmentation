@@ -19,6 +19,7 @@ from mmseg.utils import collect_env, get_root_logger
 
 from backbone import mae
 from decode_heads import atm_head
+from mmcv_custom.losses import atm_loss
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
