@@ -6,6 +6,9 @@ optimizer = dict(_delete_=True, type='AdamW', lr=1e-4, betas=(0.9, 0.999), weigh
                  constructor='LayerDecayOptimizerConstructor',
                  paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65))
 
+optimizer_config = dict(
+    _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
+
 lr_config = dict(_delete_=True, policy='poly',
                  warmup='linear',
                  warmup_iters=1500,
@@ -14,6 +17,8 @@ lr_config = dict(_delete_=True, policy='poly',
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
+
+
 
 # runner = dict(type='IterBasedRunnerAmp')
 
