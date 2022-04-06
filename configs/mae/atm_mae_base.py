@@ -9,11 +9,11 @@ optimizer = dict(_delete_=True, type='AdamW', lr=1e-4, betas=(0.9, 0.999), weigh
 optimizer_config = dict(
     _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
 
-lr_config = dict(_delete_=True, policy='poly',
-                 warmup='linear',
-                 warmup_iters=1500,
-                 warmup_ratio=1e-6,
-                 power=1.0, min_lr=0.0, by_epoch=False)
+# lr_config = dict(_delete_=True, policy='poly',
+#                  warmup='linear',
+#                  warmup_iters=1500,
+#                  warmup_ratio=1e-6,
+#                  power=1.0, min_lr=0.0, by_epoch=False)
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data = dict(samples_per_gpu=2)
